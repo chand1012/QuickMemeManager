@@ -45,6 +45,18 @@ func checkThread(discord *discordgo.Session) {
 		// if a user's ID is not in the database, then a function that would handle adding the user would be
 		// executed. If a few IDs are found in the database that are not in the patrons role, they would be deleted.
 
+		dbPatrons, err := getAllBoostedUsers()
+		if err != nil {
+			fmt.Println(err)
+			break
+		}
+
+		patrons, err := getAllServerBenefactors(discord)
+		if err != nil {
+			fmt.Println(err)
+			break
+		}
+
 	}
 }
 
