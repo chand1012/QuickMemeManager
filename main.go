@@ -1,0 +1,43 @@
+package main
+
+import (
+	"fmt"
+	"os"
+	"os/signal"
+	"syscall"
+
+	"github.com/bwmarrin/discordgo"
+)
+
+func main() {
+	key := os.Getenv("DISCORD_TOKEN")
+
+	discord, err := discordgo.New("Bot " + key)
+
+	if err != nil {
+		panic(err)
+	}
+
+	discord.AddHandler(commandHandler)
+	discord.AddHandler(readyHandler)
+	err = discord.Open()
+	if err != nil {
+		panic(err)
+	}
+
+	defer discord.Close()
+
+	fmt.Println("Bot Manager is starting up!")
+
+	sc := make(chan os.Signal, 1)
+	signal.Notify(sc, syscall.SIGINT, syscall.SIGTERM, os.Interrupt, os.Kill)
+	<-sc
+}
+
+func readyHandler(discord *discordgo.Session, ready *discordgo.Ready) {
+
+}
+
+func commandHandler(discord *discordgo.Session, message *discordgo.MessageCreate) {
+
+}
