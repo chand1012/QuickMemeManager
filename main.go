@@ -32,6 +32,16 @@ func main() {
 	sc := make(chan os.Signal, 1)
 	signal.Notify(sc, syscall.SIGINT, syscall.SIGTERM, os.Interrupt, os.Kill)
 	<-sc
+
+	// Clean up
+	fmt.Println("Cleaning up ..")
+	if lockFileExists() {
+		err = os.Remove("./thread.lock")
+		if err != nil {
+			fmt.Println(err)
+		}
+	}
+	fmt.Println("Cleanly shutdown.")
 }
 
 func readyHandler(discord *discordgo.Session, ready *discordgo.Ready) {
