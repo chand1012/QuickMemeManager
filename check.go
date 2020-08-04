@@ -94,6 +94,8 @@ func checkThread(discord *discordgo.Session) {
 	}
 }
 
+// this checks if a user is present in the database
+// but not present in any of the patron roles
 func databaseCheckWorker(dbPatrons []boostedUser, patrons []boostedUser, wg *sync.WaitGroup) {
 
 	defer wg.Done()
