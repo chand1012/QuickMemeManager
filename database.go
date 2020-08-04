@@ -2,8 +2,6 @@ package main
 
 import (
 	"database/sql"
-	"fmt"
-	"time"
 )
 
 // this is the file that contains all database
@@ -45,6 +43,20 @@ func addPatronToDB(userID string, status uint8) error {
 		return err
 	}
 	_, err = db.Exec(userID, status)
+
+	return err
+}
+
+func removePatronFromDB(userID string) error {
+	db, err := initDB()
+
+	defer db.Close()
+
+	if err != nil {
+		return err
+	}
+
+	_, err = db.Exec("DELETE FROM patrons WHERE userID = ?", userID)
 
 	return err
 }
@@ -97,29 +109,29 @@ func getAllBoostedUsers() ([]boostedUser, error) {
 
 }
 
-func setBoostedUser(userID string, status uint8, guild string) error {
-	db, err := initDB()
+// func setBoostedUser(userID string, status uint8, guild string) error {
+// 	db, err := initDB()
 
-	defer db.Close()
+// 	defer db.Close()
 
-	if err != nil {
-		return err
-	}
+// 	if err != nil {
+// 		return err
+// 	}
 
-	insert, err := db.Prepare("INSERT INTO boosted (userID, status, guilds, cooldown) VALUES ?, ?, ?, ?")
+// 	insert, err := db.Prepare("INSERT INTO boosted (userID, status, guilds, cooldown) VALUES ?, ?, ?, ?")
 
-	if err != nil {
-		fmt.Println(err)
-		return err
-	}
+// 	if err != nil {
+// 		fmt.Println(err)
+// 		return err
+// 	}
 
-	cooldown := time.Now().Unix() + 2700000
+// 	cooldown := time.Now().Unix() + 2700000
 
-	_, err = insert.Exec(userID, status, guild, cooldown)
-	insert.Close()
+// 	_, err = insert.Exec(userID, status, guild, cooldown)
+// 	insert.Close()
 
-	return err
-}
+// 	return err
+// }
 
 func removeBoostedUser(userID string) error {
 	db, err := initDB()

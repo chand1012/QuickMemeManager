@@ -115,6 +115,11 @@ func databaseCheckWorker(dbPatrons []boostedUser, patrons []boostedUser, wg *syn
 				fmt.Println(err)
 				break
 			}
+			err = removePatronFromDB(dbPatron.ID)
+			if err != nil {
+				fmt.Println(err)
+				break
+			}
 		}
 	}
 }
