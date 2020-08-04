@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"os"
 	"sync"
+	"time"
 
 	"github.com/bwmarrin/discordgo"
 )
@@ -57,8 +58,13 @@ func checkThread(discord *discordgo.Session) {
 			break
 		}
 
+		// this checks if a user is in the patrons and in the database
+		// if a user is not in the patrons they get deleted from the database
+		wg.Add(1)
+		go databaseCheckWorker(dbPatrons, patrons, &wg)
+
 		// this loop makes sure that all the patrons on the server
-		// are in the database. If the are not, add them to it
+		// are in the database. If they are not, add them to it
 		for _, patron := range patrons {
 			exists := false
 			for _, dbPatron := range dbPatrons {
@@ -67,9 +73,7 @@ func checkThread(discord *discordgo.Session) {
 					break
 				}
 			}
-			if exists {
-				continue
-			} else {
+			if !exists {
 				err = addPatronToDB(patron.ID, patron.Status)
 				if err != nil {
 					fmt.Println(err)
@@ -83,9 +87,33 @@ func checkThread(discord *discordgo.Session) {
 			}
 		}
 
-		// need a loop that deletes people who are no longer patrons from
-		// the database
+		wg.Wait()
 
+		time.Sleep(time.Hour)
+
+	}
+}
+
+func databaseCheckWorker(dbPatrons []boostedUser, patrons []boostedUser, wg *sync.WaitGroup) {
+
+	defer wg.Done()
+
+	var exists bool
+	for _, dbPatron := range dbPatrons {
+		exists = false
+		for _, patron := range patrons {
+			if patron.ID == dbPatron.ID {
+				exists = true
+				break
+			}
+		}
+		if !exists {
+			err := removeBoostedUser(dbPatron.ID)
+			if err != nil {
+				fmt.Println(err)
+				break
+			}
+		}
 	}
 }
 

@@ -1,6 +1,10 @@
 package main
 
-import "github.com/bwmarrin/discordgo"
+import (
+	"fmt"
+
+	"github.com/bwmarrin/discordgo"
+)
 
 // this file will contain the functions that
 // get the user data from discord
@@ -63,4 +67,12 @@ func sendBoostRequest(discord *discordgo.Session, userID string, status uint8) e
 
 	return err
 
+}
+
+// updates the bot status
+func updateStatus(discord *discordgo.Session) {
+	err := discord.UpdateStatus(0, "Management.")
+	if err != nil {
+		fmt.Println("Error updating the status: ", err)
+	}
 }

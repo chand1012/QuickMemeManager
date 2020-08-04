@@ -35,9 +35,11 @@ func main() {
 }
 
 func readyHandler(discord *discordgo.Session, ready *discordgo.Ready) {
-
+	go updateStatus(discord)
+	go checkThread(discord)
+	fmt.Println("Finished starting.")
 }
 
 func commandHandler(discord *discordgo.Session, message *discordgo.MessageCreate) {
-
+	// does nothing at the moment
 }
