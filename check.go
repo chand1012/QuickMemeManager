@@ -57,6 +57,35 @@ func checkThread(discord *discordgo.Session) {
 			break
 		}
 
+		// this loop makes sure that all the patrons on the server
+		// are in the database. If the are not, add them to it
+		for _, patron := range patrons {
+			exists := false
+			for _, dbPatron := range dbPatrons {
+				if patron.ID == dbPatron.ID {
+					exists = true
+					break
+				}
+			}
+			if exists {
+				continue
+			} else {
+				err = addPatronToDB(patron.ID, patron.Status)
+				if err != nil {
+					fmt.Println(err)
+					break
+				}
+				err = sendBoostRequest(discord, patron.ID, patron.Status)
+				if err != nil {
+					fmt.Println(err)
+					break
+				}
+			}
+		}
+
+		// need a loop that deletes people who are no longer patrons from
+		// the database
+
 	}
 }
 
