@@ -1,6 +1,10 @@
 package main
 
-import "database/sql"
+import (
+	"database/sql"
+	"fmt"
+	"time"
+)
 
 func getAllBoostedUsers() ([]boostedUser, error) {
 	db, err := initDB()
@@ -50,29 +54,30 @@ func getAllBoostedUsers() ([]boostedUser, error) {
 
 }
 
-// func setBoostedUser(userID string, status uint8, guild string) error {
-// 	db, err := initDB()
+// Currently only used for testing
+func setBoostedUser(userID string, status uint8, guild string) error {
+	db, err := initDB()
 
-// 	defer db.Close()
+	defer db.Close()
 
-// 	if err != nil {
-// 		return err
-// 	}
+	if err != nil {
+		return err
+	}
 
-// 	insert, err := db.Prepare("INSERT INTO boosted (userID, status, guilds, cooldown) VALUES ?, ?, ?, ?")
+	insert, err := db.Prepare("INSERT INTO boosted (userID, status, guilds, cooldown) VALUES ?, ?, ?, ?")
 
-// 	if err != nil {
-// 		fmt.Println(err)
-// 		return err
-// 	}
+	if err != nil {
+		fmt.Println(err)
+		return err
+	}
 
-// 	cooldown := time.Now().Unix() + 2700000
+	cooldown := time.Now().Unix() + 2700000
 
-// 	_, err = insert.Exec(userID, status, guild, cooldown)
-// 	insert.Close()
+	_, err = insert.Exec(userID, status, guild, cooldown)
+	insert.Close()
 
-// 	return err
-// }
+	return err
+}
 
 func removeBoostedUser(userID string) error {
 	db, err := initDB()
