@@ -38,7 +38,7 @@ func main() {
 	if lockFileExists() {
 		err = os.Remove("./thread.lock")
 		if err != nil {
-			fmt.Println(err)
+			panic(err) // its shutting down anyway
 		}
 	}
 	fmt.Println("Cleanly shutdown.")
