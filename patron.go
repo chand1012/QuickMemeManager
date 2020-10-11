@@ -11,14 +11,7 @@ func addPatronToDB(userID string, status uint8) error {
 		return err
 	}
 
-	insert, err := db.Prepare("INSERT INTO patrons (userID, status) VALUES ?, ?")
-
-	defer insert.Close()
-
-	if err != nil {
-		return err
-	}
-	_, err = db.Exec(userID, status)
+	_, err = db.Exec("INSERT INTO patrons (userID, status) VALUES (?, ?)", userID, status)
 
 	return err
 }
@@ -47,7 +40,7 @@ func getPatronStatus(userID string) (uint8, error) {
 		return 0, err
 	}
 
-	output, err := db.Prepare("SELECT status FROM patron WHERE userID = ?")
+	output, err := db.Prepare("SELECT (status) FROM patrons WHERE userID = ?")
 
 	defer output.Close()
 

@@ -1,12 +1,26 @@
 package main
 
-import "testing"
+import (
+	"testing"
+)
+
+func TestConnection(t *testing.T) {
+	db, err := initDB()
+
+	if err != nil {
+		t.Errorf("There was an error establishing the database connection: %v", err)
+	}
+
+	if db == nil {
+		t.Errorf("There was an error connecting to the DB, DB pointer is nil.")
+	}
+}
 
 func TestPatrons(t *testing.T) {
 	var err error
 	var status uint8
 
-	testID := "thisisatest"
+	testID := "00000000000"
 
 	// These will be changed as deemed necessary.
 	// minStatus will probably remain 1
@@ -20,22 +34,26 @@ func TestPatrons(t *testing.T) {
 
 		if err != nil {
 			t.Errorf("There was an error adding Patron to the Database: %v", err)
+			break
 		}
 
 		status, err = getPatronStatus(testID)
 
 		if err != nil {
 			t.Errorf("There was an error getting the Patron from the Database: %v", err)
+			break
 		}
 
 		if status != uint8(i) {
 			t.Errorf("There was an error getting the Patron from the database: expected status %d, got %d.", i, status)
+			break
 		}
 
 		err = removePatronFromDB(testID)
 
 		if err != nil {
 			t.Errorf("There was an error removing the Patron from the database: %v", err)
+			break
 		}
 	}
 }
