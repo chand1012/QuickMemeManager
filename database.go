@@ -2,6 +2,8 @@ package main
 
 import (
 	"database/sql"
+
+	_ "github.com/go-sql-driver/mysql"
 )
 
 // this is the file that contains all database
