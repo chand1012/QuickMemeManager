@@ -48,12 +48,14 @@ func checkThread(discord *discordgo.Session) {
 
 		dbPatrons, err := getAllBoostedUsers()
 		if err != nil {
+			fmt.Println("There was an error getting Boosted users.")
 			fmt.Println(err)
 			break
 		}
 
 		patrons, err := getAllServerBenefactors(discord)
 		if err != nil {
+			fmt.Println("There was an error getting server benefactors.")
 			fmt.Println(err)
 			break
 		}

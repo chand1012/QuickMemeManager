@@ -34,7 +34,7 @@ func main() {
 	<-sc
 
 	// Clean up
-	fmt.Println("Cleaning up ..")
+	fmt.Println("Cleaning up...")
 	if lockFileExists() {
 		err = os.Remove("./thread.lock")
 		if err != nil {
