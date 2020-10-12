@@ -91,7 +91,7 @@ func checkThread(discord *discordgo.Session) {
 
 		wg.Wait()
 
-		time.Sleep(time.Hour)
+		time.Sleep(time.Minute * 5)
 
 	}
 }
