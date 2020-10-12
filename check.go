@@ -76,6 +76,7 @@ func checkThread(discord *discordgo.Session) {
 				}
 			}
 			if !exists {
+				fmt.Println("Adding patron " + patron.ID + " to database.")
 				err = addPatronToDB(patron.ID, patron.Status)
 				if err != nil {
 					fmt.Println(err)
@@ -112,6 +113,7 @@ func databaseCheckWorker(dbPatrons []boostedUser, patrons []boostedUser, wg *syn
 			}
 		}
 		if !exists {
+			fmt.Println("Removing user " + dbPatron.ID + " from database.")
 			err := removeBoostedUser(dbPatron.ID)
 			if err != nil {
 				fmt.Println(err)
