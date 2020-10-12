@@ -26,3 +26,4 @@ test.sh
 ### VisualStudioCode Patch ###
 # Ignore all local history of files
 .history
+test.sh

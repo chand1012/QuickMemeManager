@@ -30,7 +30,7 @@ func getAllBoostedUsers() ([]boostedUser, error) {
 		}
 
 		user, ok := tempMap[userID]
-
+		// this will probably needs refactored
 		if ok {
 			user.Guilds = append(user.Guilds, guildID)
 			tempMap[userID] = user

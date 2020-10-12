@@ -40,7 +40,7 @@ func getPatronStatus(userID string) (uint8, error) {
 		return 0, err
 	}
 
-	output, err := db.Prepare("SELECT (status) FROM patrons WHERE userID = ?")
+	output, err := db.Prepare("SELECT status FROM patrons WHERE userID = ?")
 
 	defer output.Close()
 
@@ -55,4 +55,35 @@ func getPatronStatus(userID string) (uint8, error) {
 	}
 
 	return status, nil
+}
+
+func getAllPatrons() ([]boostedUser, error) {
+	db, err := initDB()
+
+	defer db.Close()
+
+	if err != nil {
+		return []boostedUser{}, err
+	}
+
+	rows, err := db.Query("SELECT userID, status FROM patrons")
+
+	var userID string
+	var status uint8
+	var dbPatrons []boostedUser
+	for rows.Next() {
+		err = rows.Scan(&userID, &status)
+		if err != nil {
+			return []boostedUser{}, err
+		}
+
+		patron := boostedUser{
+			ID:     userID,
+			Status: status,
+			Guilds: []string{},
+		}
+		dbPatrons = append(dbPatrons, patron)
+	}
+
+	return dbPatrons, nil
 }
