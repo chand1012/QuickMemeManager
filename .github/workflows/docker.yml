@@ -16,5 +16,5 @@ jobs:
       run: |
        docker login docker.pkg.github.com -u chand1012 --password ${{ secrets.MANAGER_TOKEN }}
        docker build -t quick-meme-manager:${{ steps.extract_branch.outputs.branch }} .
-       docker tag quick-meme-manager:${{ steps.extract_branch.outputs.branch }} docker.pkg.github.com/chand1012/quick-meme-manager/quick-meme-manager:${{ steps.extract_branch.outputs.branch }}
-       docker push docker.pkg.github.com/chand1012/quick-meme-manager/quick-meme-manager:${{ steps.extract_branch.outputs.branch }}
+       docker tag quick-meme-manager:${{ steps.extract_branch.outputs.branch }} docker.pkg.github.com/chand1012/quickmememanager/quick-meme-manager:${{ steps.extract_branch.outputs.branch }}
+       docker push docker.pkg.github.com/chand1012/quickmememanager/quick-meme-manager:${{ steps.extract_branch.outputs.branch }}
