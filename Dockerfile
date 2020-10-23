@@ -1,4 +1,5 @@
 FROM golang:1.15-alpine AS builder
+LABEL org.opencontainers.image.source=https://github.com/chand1012/QuickMemeManager
 WORKDIR /go/src/app
 COPY . . 
 RUN go get -d -v ./...
