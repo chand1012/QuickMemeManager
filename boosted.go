@@ -62,11 +62,11 @@ func getAllBoostedUsers() ([]boostedUser, error) {
 func setBoostedUser(userID string, status uint8, guild string) error {
 	db, err := initDB()
 
-	defer db.Close()
-
 	if err != nil {
 		return err
 	}
+
+	defer db.Close()
 
 	insert, err := db.Prepare("INSERT INTO boosted (userID, status, guildID, cooldown) VALUES (?, ?, ?, ?)")
 
