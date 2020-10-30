@@ -1,5 +1,7 @@
 # QuickMemeManager
 
+[![DeepSource](https://deepsource.io/gh/chand1012/QuickMemeManager.svg/?label=active+issues&show_trend=true)](https://deepsource.io/gh/chand1012/QuickMemeManager/?ref=repository-badge)
+
 Manages Patrons for [DiscordQuickMeme](https://github.com/chand1012/Discord-Quick-Meme). Here is how it will work when completed:
 
  - Will periodically scan the [DiscordQuickMeme](https://discord.gg/YNnp9uy) server for users

@@ -5,11 +5,11 @@ import "database/sql"
 func addPatronToDB(userID string, status uint8) error {
 	db, err := initDB()
 
-	defer db.Close()
-
 	if err != nil {
 		return err
 	}
+
+	defer db.Close()
 
 	_, err = db.Exec("INSERT INTO patrons (userID, status) VALUES (?, ?)", userID, status)
 
@@ -19,11 +19,11 @@ func addPatronToDB(userID string, status uint8) error {
 func removePatronFromDB(userID string) error {
 	db, err := initDB()
 
-	defer db.Close()
-
 	if err != nil {
 		return err
 	}
+
+	defer db.Close()
 
 	_, err = db.Exec("DELETE FROM patrons WHERE userID = ?", userID)
 
@@ -34,13 +34,17 @@ func removePatronFromDB(userID string) error {
 func getPatronStatus(userID string) (uint8, error) {
 	db, err := initDB()
 
-	defer db.Close()
-
 	if err != nil {
 		return 0, err
 	}
 
+	defer db.Close()
+
 	output, err := db.Prepare("SELECT status FROM patrons WHERE userID = ?")
+
+	if err != nil {
+		return 0, err
+	}
 
 	defer output.Close()
 
@@ -60,13 +64,17 @@ func getPatronStatus(userID string) (uint8, error) {
 func getAllPatrons() ([]boostedUser, error) {
 	db, err := initDB()
 
-	defer db.Close()
-
 	if err != nil {
 		return []boostedUser{}, err
 	}
 
+	defer db.Close()
+
 	rows, err := db.Query("SELECT userID, status FROM patrons")
+
+	if err != nil {
+		return []boostedUser{}, err
+	}
 
 	var userID string
 	var status uint8

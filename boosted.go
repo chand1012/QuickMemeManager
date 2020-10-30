@@ -9,15 +9,19 @@ import (
 func getAllBoostedUsers() ([]boostedUser, error) {
 	db, err := initDB()
 
-	defer db.Close()
-
 	if err != nil {
 		return nil, err
 	}
 
+	defer db.Close()
+
 	tempMap := make(map[string]boostedUser)
 
 	rows, err := db.Query("SELECT userID, status, guildID FROM boosted")
+
+	if err != nil {
+		return nil, err
+	}
 
 	var userID string
 	var status uint8
@@ -74,7 +78,12 @@ func setBoostedUser(userID string, status uint8, guild string) error {
 	cooldown := time.Now().Unix() + 2700000
 
 	_, err = insert.Exec(userID, status, guild, cooldown)
-	insert.Close()
+
+	if err != nil {
+		return err
+	}
+
+	defer insert.Close()
 
 	return err
 }
@@ -82,11 +91,11 @@ func setBoostedUser(userID string, status uint8, guild string) error {
 func removeBoostedUser(userID string) error {
 	db, err := initDB()
 
-	defer db.Close()
-
 	if err != nil {
 		return err
 	}
+
+	defer db.Close()
 
 	_, err = db.Exec("DELETE FROM boosted WHERE userID = ?", userID)
 

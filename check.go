@@ -134,7 +134,7 @@ func lockFileEqu(input []byte) (bool, error) {
 	if err != nil {
 		return false, err
 	}
-	if bytes.Compare(input, data) == 0 {
+	if bytes.Equal(input, data) {
 		return true, nil
 	}
 	return false, nil
@@ -150,7 +150,10 @@ func lockFileExists() bool {
 
 func lockFileCreate() ([]byte, error) {
 	fileData := make([]byte, 8)
-	rand.Read(fileData)
-	err := ioutil.WriteFile("./thread.lock", fileData, 0644)
+	_, err := rand.Read(fileData)
+	if err != nil {
+		return nil, err
+	}
+	err = ioutil.WriteFile("./thread.lock", fileData, 0644)
 	return fileData, err
 }
