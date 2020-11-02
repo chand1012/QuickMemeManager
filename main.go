@@ -36,7 +36,7 @@ func main() {
 	// Clean up
 	fmt.Println("Cleaning up...")
 	if lockFileExists() {
-		err = os.Remove("./thread.lock")
+		err = os.Remove(LOCKFILE)
 		if err != nil {
 			panic(err) // its shutting down anyway
 		}

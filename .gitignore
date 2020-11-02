@@ -27,3 +27,4 @@ test.sh
 # Ignore all local history of files
 .history
 test.sh
+run.sh
